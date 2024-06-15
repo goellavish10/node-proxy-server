@@ -10,7 +10,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("tiny"));
 
 app.use((req, res) => {
-  proxy.web(req, res, { target: req.url });
+  console.log(req.url);
+  console.log(req.originalUrl);
+  console.log(req.headers.host);
+
+  const targetUrl = `http://${req.headers.host}${req.url}`;
+  proxy.web(req, res, { target: targetUrl }, (err) => {
+    console.error("Proxy Error:", err);
+    res.status(500).send("Proxy Error");
+  });
 });
 
 app.use("/healthcheck", (req, res) => {
