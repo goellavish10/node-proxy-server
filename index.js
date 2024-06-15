@@ -15,6 +15,8 @@ app.use((req, res) => {
   console.log(req.headers.host);
 
   const targetUrl = `http://${req.headers.host}${req.url}`;
+  console.log("TARGET URL");
+  console.log(targetUrl);
   proxy.web(req, res, { target: targetUrl }, (err) => {
     console.error("Proxy Error:", err);
     res.status(500).send("Proxy Error");
